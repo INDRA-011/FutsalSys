@@ -1,7 +1,56 @@
 {% extends "base.html" %}
 {% block title %}All Bookings{% endblock %}
+
 {% block content %}
-<h2>All Bookings</h2>
-<!-- TODO (feature/all-bookings-polish, optional) -->
-<p class="text-muted">{{ bookings|length }} total booking(s).</p>
+<div class="container mt-4">
+  <h2>All Bookings</h2>
+
+  <div class="mb-3">
+    <a href="{% url 'all_bookings' %}"
+       class="btn btn-sm {% if not selected_status %}btn-primary{% else %}btn-outline-primary{% endif %}">
+      All
+    </a>
+    {% for value, label in status_choices %}
+      <a href="?status={{ value }}"
+         class="btn btn-sm {% if selected_status == value %}btn-primary{% else %}btn-outline-primary{% endif %}">
+        {{ label }}
+      </a>
+    {% endfor %}
+  </div>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Court</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Player</th>
+        <th>Status</th>
+        <th>Requested At</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for booking in bookings %}
+      <tr>
+        <td>{{ booking.slot.court.name }}</td>
+        <td>{{ booking.slot.date }}</td>
+        <td>{{ booking.slot.start_time }} - {{ booking.slot.end_time }}</td>
+        <td>{{ booking.player.username }}</td>
+        <td>
+          {% if booking.status == "approved" %}
+            <span class="badge bg-success">Approved</span>
+          {% elif booking.status == "rejected" %}
+            <span class="badge bg-danger">Rejected</span>
+          {% else %}
+            <span class="badge bg-warning text-dark">Pending</span>
+          {% endif %}
+        </td>
+        <td>{{ booking.created_at }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-muted">No bookings found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

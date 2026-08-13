@@ -1,7 +1,56 @@
 {% extends "base.html" %}
 {% block title %}My Bookings{% endblock %}
+
 {% block content %}
-<h2>My Bookings</h2>
-<!-- TODO (feature/my-bookings) -->
-<p class="text-muted">{{ bookings|length }} booking(s).</p>
+<div class="container mt-4">
+  <h2>My Bookings</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Court</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Status</th>
+        <th>Requested At</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for booking in bookings %}
+      <tr>
+        <td>{{ booking.slot.court.name }}</td>
+        <td>{{ booking.slot.date }}</td>
+        <td>{{ booking.slot.start_time }} - {{ booking.slot.end_time }}</td>
+        <td>
+          {% if booking.status == "approved" %}
+            <span class="badge bg-success">Approved</span>
+          {% elif booking.status == "rejected" %}
+            <span class="badge bg-danger">Rejected</span>
+          {% else %}
+            <span class="badge bg-warning text-dark">Pending</span>
+          {% endif %}
+        </td>
+        <td>{{ booking.created_at }}</td>
+        <td>
+          {% if booking.status == "pending" %}
+          <form method="post" action="{% url 'cancel_booking' booking.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-muted">You haven't made any booking requests yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}
