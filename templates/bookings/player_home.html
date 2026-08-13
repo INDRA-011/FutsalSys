@@ -1,7 +1,50 @@
 {% extends "base.html" %}
-{% block title %}Browse Slots{% endblock %}
+
 {% block content %}
-<h2>Browse Slots</h2>
-<!-- TODO (feature/browse-slots) -->
-<p class="text-muted">{{ slots|length }} slot(s) available.</p>
+<div class="container mt-4">
+  <h2>Browse Available Slots</h2>
+
+  <form method="get" class="row g-2 mb-4">
+    <div class="col-auto">
+      <input type="date" name="date" value="{{ selected_date|date:'Y-m-d' }}" class="form-control">
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+  </form>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Court</th>
+        <th>Start</th>
+        <th>End</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for slot in slots %}
+      <tr>
+        <td>{{ slot.court.name }}</td>
+        <td>{{ slot.start_time }}</td>
+        <td>{{ slot.end_time }}</td>
+        <td>
+          <form method="post" action="{% url 'request_booking' slot.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success btn-sm">Request Booking</button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4" class="text-muted">No open slots for this date.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

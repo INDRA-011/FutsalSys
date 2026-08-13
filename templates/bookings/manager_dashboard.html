@@ -1,7 +1,49 @@
 {% extends "base.html" %}
-{% block title %}Manager Dashboard{% endblock %}
+
 {% block content %}
-<h2>Manager Dashboard</h2>
-<!-- TODO (feature/manager-dashboard) -->
-<p class="text-muted">{{ pending|length }} pending request(s).</p>
+<div class="container mt-4">
+  <h2>Manager Dashboard — Pending Requests</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Court</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Player</th>
+        <th>Requested At</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for booking in pending %}
+      <tr>
+        <td>{{ booking.slot.court.name }}</td>
+        <td>{{ booking.slot.date }}</td>
+        <td>{{ booking.slot.start_time }} - {{ booking.slot.end_time }}</td>
+        <td>{{ booking.player.username }}</td>
+        <td>{{ booking.created_at }}</td>
+        <td class="d-flex gap-2">
+          <form method="post" action="{% url 'approve_booking' booking.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success btn-sm">Approve</button>
+          </form>
+          <form method="post" action="{% url 'reject_booking' booking.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-muted">No pending requests.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}
