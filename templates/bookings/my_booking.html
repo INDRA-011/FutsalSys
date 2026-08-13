@@ -1,81 +1,52 @@
 {% extends "base.html" %}
 
-{% block title %}All Bookings{% endblock %}
+{% block title %}My Bookings{% endblock %}
 
 {% block content %}
 
 <div class="container">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-
-        <div>
-            <h2>All Bookings</h2>
-            <p class="text-muted">
-                Complete booking history
-            </p>
-        </div>
-
-        <a
-            href="{% url 'manager_dashboard' %}"
-            class="btn btn-outline-primary"
-        >
-            Pending Requests
-        </a>
-
-    </div>
-
-
     <div class="mb-4">
+        <h2>My Bookings</h2>
 
-        <a
-            href="{% url 'all_bookings' %}"
-            class="btn btn-sm btn-outline-secondary"
-        >
-            All
-        </a>
-
-        <a
-            href="?status=pending"
-            class="btn btn-sm btn-outline-warning"
-        >
-            Pending
-        </a>
-
-        <a
-            href="?status=approved"
-            class="btn btn-sm btn-outline-success"
-        >
-            Approved
-        </a>
-
-        <a
-            href="?status=rejected"
-            class="btn btn-sm btn-outline-danger"
-        >
-            Rejected
-        </a>
-
+        <p class="text-muted">
+            View and manage your futsal booking requests.
+        </p>
     </div>
+
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
 
 
     {% if bookings %}
 
         <div class="table-responsive">
 
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-hover align-middle">
 
                 <thead class="table-dark">
 
                     <tr>
-                        <th>Player</th>
                         <th>Court</th>
                         <th>Date</th>
                         <th>Time</th>
                         <th>Status</th>
                         <th>Requested</th>
+                        <th>Action</th>
                     </tr>
 
                 </thead>
+
 
                 <tbody>
 
@@ -83,17 +54,23 @@
 
                         <tr>
 
-                            <td>
-                                {{ booking.player.username }}
-                            </td>
+                            <!-- COURT -->
 
                             <td>
-                                {{ booking.slot.court.name }}
+                                <strong>
+                                    {{ booking.slot.court.name }}
+                                </strong>
                             </td>
+
+
+                            <!-- DATE -->
 
                             <td>
                                 {{ booking.slot.date|date:"M d, Y" }}
                             </td>
+
+
+                            <!-- TIME -->
 
                             <td>
                                 {{ booking.slot.start_time|time:"H:i" }}
@@ -101,29 +78,89 @@
                                 {{ booking.slot.end_time|time:"H:i" }}
                             </td>
 
+
+                            <!-- STATUS -->
+
                             <td>
 
                                 {% if booking.status == "pending" %}
+
                                     <span class="badge bg-warning text-dark">
                                         Pending
                                     </span>
 
                                 {% elif booking.status == "approved" %}
+
                                     <span class="badge bg-success">
                                         Approved
                                     </span>
 
-                                {% else %}
+                                {% elif booking.status == "rejected" %}
+
                                     <span class="badge bg-danger">
                                         Rejected
                                     </span>
+
                                 {% endif %}
 
                             </td>
 
+
+                            <!-- REQUESTED -->
+
                             <td>
                                 {{ booking.created_at|date:"M d, Y H:i" }}
                             </td>
+
+
+                            <!-- ACTION -->
+
+                        <td>
+
+    {% if booking.status == "pending" %}
+
+        <form
+            method="post"
+            action="{% url 'cancel_booking' booking.id %}"
+        >
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="btn btn-danger btn-sm"
+            >
+                Cancel
+            </button>
+        </form>
+
+
+    {% elif booking.status == "approved" %}
+
+        <form
+            method="post"
+            action="{% url 'cancel_booking' booking.id %}"
+            onsubmit="return confirm('Are you sure you want to cancel this approved booking?');"
+        >
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="btn btn-danger btn-sm"
+            >
+                Cancel Booking
+            </button>
+        </form>
+
+
+    {% else %}
+
+        <span class="text-muted">
+            —
+        </span>
+
+    {% endif %}
+
+</td>
 
                         </tr>
 
@@ -135,11 +172,19 @@
 
         </div>
 
+
     {% else %}
 
         <div class="alert alert-info">
-            No bookings found.
+            You don't have any bookings yet.
         </div>
+
+        <a
+            href="{% url 'browse_slots' %}"
+            class="btn btn-success"
+        >
+            Browse Available Slots
+        </a>
 
     {% endif %}
 

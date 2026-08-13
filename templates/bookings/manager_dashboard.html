@@ -1,7 +1,131 @@
 {% extends "base.html" %}
+
 {% block title %}Manager Dashboard{% endblock %}
+
 {% block content %}
-<h2>Manager Dashboard</h2>
-<!-- TODO (feature/manager-dashboard) -->
-<p class="text-muted">{{ pending|length }} pending request(s).</p>
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Manager Dashboard</h2>
+            <p class="text-muted mb-0">
+                Pending booking requests
+            </p>
+        </div>
+
+        <a href="{% url 'all_bookings' %}" class="btn btn-outline-primary">
+            View All Bookings
+        </a>
+    </div>
+
+    <div class="alert alert-info">
+        <strong>{{ pending|length }}</strong>
+        pending booking request(s).
+    </div>
+
+    {% if pending %}
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Player</th>
+                        <th>Court</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Requested At</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for booking in pending %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ booking.player.username }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ booking.slot.court.name }}
+                            </td>
+
+                            <td>
+                                {{ booking.slot.date|date:"M d, Y" }}
+                            </td>
+
+                            <td>
+                                {{ booking.slot.start_time|time:"H:i" }}
+                                -
+                                {{ booking.slot.end_time|time:"H:i" }}
+                            </td>
+
+                            <td>
+                                {{ booking.created_at|date:"M d, Y H:i" }}
+                            </td>
+
+                            <td>
+
+                                <div class="d-flex gap-2">
+
+                                    <form
+                                        method="post"
+                                        action="{% url 'approve_booking' booking.id %}"
+                                    >
+                                        {% csrf_token %}
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-success btn-sm"
+                                        >
+                                            Accept
+                                        </button>
+                                    </form>
+
+
+                                    <form
+                                        method="post"
+                                        action="{% url 'reject_booking' booking.id %}"
+                                    >
+                                        {% csrf_token %}
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-danger btn-sm"
+                                        >
+                                            Reject
+                                        </button>
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="alert alert-success">
+            There are no pending booking requests.
+        </div>
+
+    {% endif %}
+
+</div>
+
 {% endblock %}

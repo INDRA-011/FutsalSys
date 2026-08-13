@@ -1,1 +1,200 @@
-/* Add custom styling here — kept minimal so it doesn't fight Bootstrap defaults. */
+/* ================================
+   FutsalSys - Main CSS
+================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0d6efd !important;
+    color: #212529;
+    min-height: 100vh;
+}
+
+/* Navbar */
+
+.navbar {
+    background: #620680 !important;
+    box-shadow: 0 3px 10px rgba(111, 57, 57, 0.2);
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+/* Main content */
+
+main.container {
+    background: rgb(8, 143, 85);
+    border-radius: 15px;
+    min-height: calc(100vh - 100px);
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding: 30px !important;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Page header */
+
+.page-header {
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    color: #6c757d;
+}
+
+/* Messages */
+
+.messages {
+    margin-bottom: 25px;
+}
+
+.message {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background: #cff4fc;
+    border: 1px solid #9eeaf9;
+}
+
+/* Slot grid */
+
+.slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* Slot cards */
+
+.slot-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+    border: 1px solid #dee2e6;
+    transition: 0.2s;
+}
+
+.slot-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.slot-card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #084298;
+}
+
+.slot-info {
+    margin: 8px 0;
+    color: #495057;
+}
+
+/* Status */
+
+.status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.available {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.booked {
+    background: #f8d7da;
+    color: #842029;
+}
+
+/* Request button */
+
+.request-btn {
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    background: #0d6efd;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.request-btn:hover {
+    background: #084298;
+}
+
+/* Disabled button */
+
+.disabled-btn {
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    background: #6c757d;
+    color: white;
+    font-size: 15px;
+    cursor: not-allowed;
+}
+
+/* Empty */
+
+.empty {
+    text-align: center;
+    background: #f8f9fa;
+    padding: 50px;
+    border-radius: 12px;
+    color: #6c757d;
+}
+
+/* Tables */
+
+.table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Footer */
+
+footer {
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    main.container {
+        margin: 15px;
+        padding: 20px !important;
+    }
+
+    .page-header h1 {
+        font-size: 25px;
+    }
+
+    .slots-grid {
+        grid-template-columns: 1fr;
+    }
+}

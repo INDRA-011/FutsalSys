@@ -1,7 +1,128 @@
 {% extends "base.html" %}
+
 {% block title %}Browse Slots{% endblock %}
+
 {% block content %}
-<h2>Browse Slots</h2>
-<!-- TODO (feature/browse-slots) -->
-<p class="text-muted">{{ slots|length }} slot(s) available.</p>
+
+<div class="container mt-4">
+
+    <h2>Browse Available Slots</h2>
+
+    <!-- Date Filter -->
+    <form method="GET" class="mb-4">
+        <div class="row align-items-end">
+
+            <div class="col-md-4">
+                <label for="date" class="form-label">Select Date</label>
+
+                <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    value="{{ selected_date|date:'Y-m-d' }}"
+                    class="form-control"
+                >
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">
+                    Search
+                </button>
+            </div>
+
+        </div>
+    </form>
+
+
+    <!-- Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+    <!-- Available Slots -->
+    <h5 class="mb-3">
+        Available Slots
+    </h5>
+
+    {% if slots %}
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-striped">
+
+                <thead>
+                    <tr>
+                        <th>Court</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for slot in slots %}
+
+                        <tr>
+                            <td>
+                                {{ slot.court.name }}
+                            </td>
+
+                            <td>
+                                {{ slot.date }}
+                            </td>
+
+                            <td>
+                                {{ slot.start_time }}
+                            </td>
+
+                            <td>
+                                {{ slot.end_time }}
+                            </td>
+
+                            <td>
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'request_booking' slot.id %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-success btn-sm"
+                                    >
+                                        Request Booking
+                                    </button>
+
+                                </form>
+
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="alert alert-info">
+            No available slots for {{ selected_date }}.
+        </div>
+
+    {% endif %}
+
+</div>
+
 {% endblock %}

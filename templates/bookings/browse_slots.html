@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Browse Futsal Slots{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>Available Futsal Slots</h1>
+    <p>Choose a suitable court and time and submit your booking request.</p>
+</div>
+
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if slots %}
+
+    <div class="slots-grid">
+
+        {% for slot in slots %}
+
+            <div class="slot-card">
+
+                <h3>{{ slot.court.name }}</h3>
+
+                <p class="slot-info">
+                    <strong>Date:</strong>
+                    {{ slot.date|date:"F d, Y" }}
+                </p>
+
+                <p class="slot-info">
+                    <strong>Time:</strong>
+                    {{ slot.start_time|time:"g:i A" }}
+                    -
+                    {{ slot.end_time|time:"g:i A" }}
+                </p>
+
+                {% if slot.is_booked %}
+
+                    <span class="status booked">
+                        Booked
+                    </span>
+
+                    <button class="disabled-btn" disabled>
+                        Not Available
+                    </button>
+
+                {% else %}
+
+                    <span class="status available">
+                        Available
+                    </span>
+
+                    <form method="post"
+                          action="{% url 'request_booking' slot.id %}">
+
+                        {% csrf_token %}
+
+                        <button type="submit" class="request-btn">
+                            Request Booking
+                        </button>
+
+                    </form>
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <div class="empty">
+        <h2>No slots available</h2>
+        <p>There are currently no futsal slots available.</p>
+    </div>
+
+{% endif %}
+
+{% endblock %}
