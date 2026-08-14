@@ -11,7 +11,7 @@ def browse_slots(request):
     Display available futsal time slots.
     """
 
-    slots = TimeSlot.objects.all().order_by("date", "start_time")
+    slots = TimeSlot.objects.all().order_by("date", "start_time")[:8]
 
     return render(
         request,

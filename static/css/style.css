@@ -1,6 +1,7 @@
-/* ================================
+/* =================================
    FutsalSys - Main CSS
-================================ */
+   Modern Blue Theme
+================================= */
 
 * {
     box-sizing: border-box;
@@ -8,193 +9,405 @@
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0d6efd !important;
-    color: #212529;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #dbeafe, #eff6ff) !important;
+    color: #1e293b;
     min-height: 100vh;
 }
 
-/* Navbar */
+/* =================================
+   NAVBAR
+================================= */
 
 .navbar {
-    background: #620680 !important;
-    box-shadow: 0 3px 10px rgba(111, 57, 57, 0.2);
+    background: #1d4ed8 !important;
+    box-shadow: 0 4px 15px rgba(30, 64, 175, 0.25);
+    padding: 10px 0;
 }
 
 .navbar-brand {
-    font-weight: bold;
-}
-
-/* Main content */
-
-main.container {
-    background: rgb(8, 143, 85);
-    border-radius: 15px;
-    min-height: calc(100vh - 100px);
-    margin-top: 25px;
-    margin-bottom: 25px;
-    padding: 30px !important;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* Page header */
-
-.page-header {
-    margin-bottom: 30px;
-}
-
-.page-header h1 {
-    font-size: 32px;
     font-weight: 700;
-    margin-bottom: 8px;
+    font-size: 21px;
 }
 
-.page-header p {
-    color: #6c757d;
-}
-
-/* Messages */
-
-.messages {
-    margin-bottom: 25px;
-}
-
-.message {
-    padding: 14px 18px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    background: #cff4fc;
-    border: 1px solid #9eeaf9;
-}
-
-/* Slot grid */
-
-.slots-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-/* Slot cards */
-
-.slot-card {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 22px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
-    border: 1px solid #dee2e6;
+.navbar .nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    margin-left: 5px;
+    border-radius: 7px;
+    padding: 7px 11px !important;
     transition: 0.2s;
 }
 
+.navbar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* =================================
+   MAIN CONTENT
+================================= */
+
+main.container {
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 18px;
+
+    min-height: calc(100vh - 130px);
+
+    margin-top: 22px;
+    margin-bottom: 22px;
+
+    padding: 28px !important;
+
+    box-shadow: 0 8px 30px rgba(30, 64, 175, 0.12);
+}
+
+/* =================================
+   PAGE HEADER
+================================= */
+
+.page-header {
+    background: #ffffff;
+
+    padding: 20px 24px;
+
+    border-radius: 14px;
+
+    margin-bottom: 22px;
+
+    border-left: 5px solid #2563eb;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.page-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+
+    margin: 0 0 7px 0;
+
+    color: #1e3a8a;
+}
+
+.page-header p {
+    color: #64748b;
+    margin: 0;
+    font-size: 15px;
+}
+
+/* =================================
+   MESSAGES
+================================= */
+
+.messages {
+    margin-bottom: 20px;
+}
+
+.message {
+    padding: 12px 16px;
+
+    border-radius: 9px;
+
+    margin-bottom: 8px;
+
+    background: #dbeafe;
+
+    border: 1px solid #93c5fd;
+
+    color: #1e40af;
+}
+
+/* =================================
+   SLOT GRID
+================================= */
+
+.slots-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+/* =================================
+   SLOT CARD
+================================= */
+
+.slot-card {
+    background: #ffffff;
+
+    border-radius: 13px;
+
+    padding: 18px;
+
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.07);
+
+    border: 1px solid #dbeafe;
+
+    transition: all 0.2s ease;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.slot-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 3px;
+
+    background: #2563eb;
+}
+
 .slot-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+
+    box-shadow: 0 8px 20px rgba(30, 64, 175, 0.13);
+
+    border-color: #93c5fd;
 }
 
 .slot-card h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #084298;
+    margin: 2px 0 12px 0;
+
+    color: #1e3a8a;
+
+    font-size: 18px;
 }
 
 .slot-info {
-    margin: 8px 0;
-    color: #495057;
+    margin: 7px 0;
+
+    color: #475569;
+
+    font-size: 14px;
 }
 
-/* Status */
+.slot-info strong {
+    color: #1e293b;
+}
+
+/* =================================
+   STATUS
+================================= */
 
 .status {
     display: inline-block;
-    padding: 6px 12px;
+
+    padding: 5px 10px;
+
     border-radius: 20px;
-    font-size: 13px;
-    font-weight: bold;
-    margin: 10px 0;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    margin: 8px 0 10px;
 }
 
 .available {
-    background: #d1e7dd;
-    color: #0f5132;
+    background: #dcfce7;
+
+    color: #166534;
+
+    border: 1px solid #86efac;
 }
 
 .booked {
-    background: #f8d7da;
-    color: #842029;
+    background: #fee2e2;
+
+    color: #991b1b;
+
+    border: 1px solid #fca5a5;
 }
 
-/* Request button */
+/* =================================
+   REQUEST BUTTON
+================================= */
 
 .request-btn {
     width: 100%;
+
     border: none;
+
     border-radius: 8px;
-    padding: 12px;
-    background: #0d6efd;
-    color: white;
-    font-size: 15px;
-    font-weight: bold;
+
+    padding: 10px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
     cursor: pointer;
+
     transition: 0.2s;
 }
 
 .request-btn:hover {
-    background: #084298;
+    background: #1d4ed8;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
 }
 
-/* Disabled button */
+/* =================================
+   DISABLED BUTTON
+================================= */
 
 .disabled-btn {
     width: 100%;
+
     border: none;
+
     border-radius: 8px;
-    padding: 12px;
-    background: #6c757d;
-    color: white;
-    font-size: 15px;
+
+    padding: 10px;
+
+    background: #94a3b8;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
     cursor: not-allowed;
 }
 
-/* Empty */
+/* =================================
+   EMPTY STATE
+================================= */
 
 .empty {
     text-align: center;
-    background: #f8f9fa;
-    padding: 50px;
-    border-radius: 12px;
-    color: #6c757d;
+
+    background: #f8fafc;
+
+    padding: 45px 25px;
+
+    border-radius: 14px;
+
+    color: #64748b;
+
+    border: 1px dashed #94a3b8;
 }
 
-/* Tables */
+.empty h2 {
+    color: #1e3a8a;
+
+    margin-bottom: 8px;
+}
+
+/* =================================
+   TABLES
+================================= */
 
 .table {
-    background: white;
+    background: #ffffff;
+
     border-radius: 10px;
+
     overflow: hidden;
 }
 
-/* Footer */
+.table thead {
+    background: #1d4ed8;
 
-footer {
-    color: white;
-    text-align: center;
-    padding: 20px;
+    color: #ffffff;
 }
 
-/* Mobile */
+.table th {
+    font-weight: 600;
+}
+
+.table tbody tr:hover {
+    background: #eff6ff;
+}
+
+/* =================================
+   FORMS
+================================= */
+
+input,
+select,
+textarea {
+    border-radius: 8px !important;
+
+    border: 1px solid #cbd5e1 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #2563eb !important;
+
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+}
+
+/* =================================
+   FOOTER
+================================= */
+
+footer {
+    color: #475569;
+
+    text-align: center;
+
+    padding: 15px;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* =================================
+   TABLET
+================================= */
+
+@media (max-width: 950px) {
+
+    .slots-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+/* =================================
+   MOBILE
+================================= */
 
 @media (max-width: 600px) {
 
     main.container {
-        margin: 15px;
-        padding: 20px !important;
+        margin: 12px;
+
+        padding: 18px !important;
+
+        border-radius: 14px;
+    }
+
+    .page-header {
+        padding: 18px;
     }
 
     .page-header h1 {
-        font-size: 25px;
+        font-size: 24px;
     }
 
     .slots-grid {
         grid-template-columns: 1fr;
     }
+
+    .slot-card {
+        padding: 16px;
+    }
+
 }

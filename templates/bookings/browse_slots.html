@@ -6,8 +6,10 @@
 {% block content %}
 
 <div class="page-header">
-    <h1>Available Futsal Slots</h1>
-    <p>Choose a suitable court and time and submit your booking request.</p>
+    <h1>⚽ Book Your Futsal Court</h1>
+    <p class="subtitle">
+        Select a court and available time slot.
+    </p>
 </div>
 
 {% if messages %}
@@ -28,35 +30,47 @@
 
             <div class="slot-card">
 
-                <h3>{{ slot.court.name }}</h3>
+                <div class="slot-top">
+                    <h3>⚽ {{ slot.court.name }}</h3>
 
-                <p class="slot-info">
-                    <strong>Date:</strong>
-                    {{ slot.date|date:"F d, Y" }}
-                </p>
+                    {% if slot.is_booked %}
+                        <span class="status booked">Booked</span>
+                    {% else %}
+                        <span class="status available">Available</span>
+                    {% endif %}
+                </div>
 
-                <p class="slot-info">
-                    <strong>Time:</strong>
-                    {{ slot.start_time|time:"g:i A" }}
-                    -
-                    {{ slot.end_time|time:"g:i A" }}
-                </p>
+                <div class="slot-details">
+
+                    <div class="slot-detail">
+                        <span class="detail-icon">📅</span>
+                        <div>
+                            <small>Date</small>
+                            <strong>{{ slot.date|date:"M d, Y" }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="slot-detail">
+                        <span class="detail-icon">🕐</span>
+                        <div>
+                            <small>Time</small>
+                            <strong>
+                                {{ slot.start_time|time:"g:i A" }}
+                                -
+                                {{ slot.end_time|time:"g:i A" }}
+                            </strong>
+                        </div>
+                    </div>
+
+                </div>
 
                 {% if slot.is_booked %}
-
-                    <span class="status booked">
-                        Booked
-                    </span>
 
                     <button class="disabled-btn" disabled>
                         Not Available
                     </button>
 
                 {% else %}
-
-                    <span class="status available">
-                        Available
-                    </span>
 
                     <form method="post"
                           action="{% url 'request_booking' slot.id %}">
@@ -80,8 +94,11 @@
 {% else %}
 
     <div class="empty">
-        <h2>No slots available</h2>
-        <p>There are currently no futsal slots available.</p>
+        <div class="empty-icon">⚽</div>
+        <h2>No Slots Available</h2>
+        <p>
+            There are currently no futsal slots available.
+        </p>
     </div>
 
 {% endif %}
