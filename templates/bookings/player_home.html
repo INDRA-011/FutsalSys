@@ -1,50 +1,101 @@
 {% extends "base.html" %}
+{% block title %}Browse Slots{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-  <h2>Browse Available Slots</h2>
-
-  <form method="get" class="row g-2 mb-4">
-    <div class="col-auto">
-      <input type="date" name="date" value="{{ selected_date|date:'Y-m-d' }}" class="form-control">
+<div class="browse-page">
+  <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+    <div>
+      <h2 class="mb-1">Browse Available Slots</h2>
+      <p class="text-muted mb-0">Pick a court and time, then view details to request a booking.</p>
     </div>
-    <div class="col-auto">
-      <button type="submit" class="btn btn-primary">Filter</button>
-    </div>
-  </form>
+    <form method="get" class="d-flex gap-2 align-items-end">
+      <div>
+        <label class="form-label small mb-1">Date</label>
+        <input type="date" name="date" value="{{ selected_date|date:'Y-m-d' }}" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-success">View</button>
+    </form>
+  </div>
 
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  <div class="row g-4">
+    {% for court in courts %}
+    <div class="col-lg-6">
+      <div class="court-column">
+        <div class="court-column-header">
+          <span class="court-name">{{ court.name }}</span>
+          {% if court.location %}<span class="court-location">{{ court.location }}</span>{% endif %}
+        </div>
+
+        <div class="court-slot-list">
+          {% for slot in court.day_slots %}
+          <div class="slot-row {% if slot.is_booked %}slot-row-booked{% endif %}">
+            <div class="slot-time">
+              <span class="slot-time-main">{{ slot.start_time|time:"g:i A" }}</span>
+              <span class="slot-time-sep">&ndash;</span>
+              <span class="slot-time-main">{{ slot.end_time|time:"g:i A" }}</span>
+            </div>
+            <div class="slot-status">
+              {% if slot.is_booked %}
+                <span class="badge slot-badge-booked">Booked</span>
+              {% else %}
+                <span class="badge slot-badge-open">Open</span>
+              {% endif %}
+            </div>
+            <div class="slot-action">
+              <button type="button" class="btn btn-outline-success btn-sm"
+                      data-bs-toggle="modal" data-bs-target="#slotModal{{ slot.id }}">
+                View Details
+              </button>
+            </div>
+          </div>
+
+          <!-- Modal for this slot -->
+          <div class="modal fade" id="slotModal{{ slot.id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content slot-modal">
+                <div class="modal-header">
+                  <h5 class="modal-title">{{ court.name }} &mdash; Slot Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <ul class="slot-detail-list">
+                    <li><span>Court</span><strong>{{ court.name }}</strong></li>
+                    <li><span>Date</span><strong>{{ slot.date }}</strong></li>
+                    <li><span>Time</span><strong>{{ slot.start_time|time:"g:i A" }} &ndash; {{ slot.end_time|time:"g:i A" }}</strong></li>
+                    <li><span>Status</span>
+                      <strong>
+                        {% if slot.is_booked %}
+                          <span class="badge slot-badge-booked">Booked</span>
+                        {% else %}
+                          <span class="badge slot-badge-open">Open</span>
+                        {% endif %}
+                      </strong>
+                    </li>
+                  </ul>
+
+                  {% if slot.is_booked %}
+                    <div class="alert alert-secondary mb-0">This slot is already booked. Please choose another time.</div>
+                  {% endif %}
+                </div>
+                {% if not slot.is_booked %}
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                  <form method="post" action="{% url 'request_booking' slot.id %}" class="m-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Request Booking</button>
+                  </form>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <p class="text-muted px-1 py-3 mb-0">No slots scheduled for this date.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
     {% endfor %}
-  {% endif %}
-
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Court</th>
-        <th>Start</th>
-        <th>End</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for slot in slots %}
-      <tr>
-        <td>{{ slot.court.name }}</td>
-        <td>{{ slot.start_time }}</td>
-        <td>{{ slot.end_time }}</td>
-        <td>
-          <form method="post" action="{% url 'request_booking' slot.id %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-success btn-sm">Request Booking</button>
-          </form>
-        </td>
-      </tr>
-      {% empty %}
-      <tr><td colspan="4" class="text-muted">No open slots for this date.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  </div>
 </div>
 {% endblock %}

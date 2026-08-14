@@ -1,16 +1,20 @@
+"""
+OWNER: feature/browse-slots
+Only this file + templates/bookings/player_home.html belong to this branch.
+"""
 from datetime import date
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from .models import Booking, TimeSlot
+from .models import Booking, Court, TimeSlot
 
 
 @login_required
 def browse_slots(request):
-    # 1. Get the date from the URL query string (?date=2026-08-14)
     raw_date = request.GET.get("date")
     if raw_date:
         try:
@@ -20,14 +24,18 @@ def browse_slots(request):
     else:
         selected_date = date.today()
 
-    # 2. Only unbooked slots, for that date, ordered so the table reads top-to-bottom by time
-    slots = TimeSlot.objects.filter(
-        date=selected_date,
-        is_booked=False,
-    ).order_by("start_time")
+    # Each court gets its own list of that day's slots (court.day_slots),
+    # including already-booked ones, so we can show "Booked" instead of hiding them.
+    courts = Court.objects.prefetch_related(
+        Prefetch(
+            "slots",
+            queryset=TimeSlot.objects.filter(date=selected_date).order_by("start_time"),
+            to_attr="day_slots",
+        )
+    )
 
     return render(request, "bookings/player_home.html", {
-        "slots": slots,
+        "courts": courts,
         "selected_date": selected_date,
     })
 
@@ -36,6 +44,10 @@ def browse_slots(request):
 @require_POST
 def request_booking(request, slot_id):
     slot = get_object_or_404(TimeSlot, pk=slot_id)
+
+    if slot.is_booked:
+        messages.error(request, "Sorry, that slot was just booked by someone else.")
+        return redirect("browse_slots")
 
     Booking.objects.create(
         player=request.user,

@@ -1,299 +1,177 @@
-/* Add custom styling here — kept minimal so it doesn't fight Bootstrap defaults. *//* =========================================================================
-   FUTSAL BOOKING — pitch-inspired theme
-   Signature idea: the table is the pitch. Rows mow in alternating turf
-   stripes, status badges read like scoreboard chips, and the navbar
-   carries a dashed chalk touchline instead of a plain border.
-   ========================================================================= */
-
-@import url('https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+/* ============================================
+   Futsal Booking — Turf Theme
+   ============================================ */
 
 :root {
-  --turf-deep:  #0E3B2E;   /* navbar / dark surfaces */
-  --turf:       #1E7B4D;   /* primary green — approved, links, focus */
-  --turf-light: #E7F2E9;   /* mowed-stripe tint for alternating rows */
-  --chalk:      #FAF9F4;   /* page background */
-  --ink:        #142019;   /* body text */
-  --ink-soft:   #4B5A52;   /* secondary text */
-  --amber:      #E8A33D;   /* pending / floodlight accent */
-  --coral:      #D64550;   /* rejected / danger accent */
-  --line:       #D8E3DB;   /* hairline borders */
-
-  --font-display: 'Teko', sans-serif;
-  --font-body: 'Work Sans', sans-serif;
-
-  --radius: 10px;
+  --turf-green: #2e7d32;
+  --turf-green-dark: #1c3b26;
+  --turf-navy: #10243e;
+  --turf-amber: #f2a93b;
+  --turf-bg: #f7f9f7;
+  --turf-border: #e1e6e1;
 }
-
-/* ---------- Base ---------- */
 
 body {
-  background: var(--chalk);
-  color: var(--ink);
-  font-family: var(--font-body);
-  position: relative;
+  background-color: var(--turf-bg);
 }
-
-/* Faint center-circle watermark, like a court marking behind the page */
-body::before {
-  content: "";
-  position: fixed;
-  top: -180px;
-  right: -180px;
-  width: 420px;
-  height: 420px;
-  border: 2px solid var(--turf);
-  border-radius: 50%;
-  opacity: 0.05;
-  pointer-events: none;
-  z-index: 0;
-}
-
-main.container {
-  position: relative;
-  z-index: 1;
-}
-
-h1, h2, h3, h4,
-.navbar-brand {
-  font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--turf-deep);
-}
-
-h2 {
-  font-size: 2.1rem;
-  text-transform: uppercase;
-  border-bottom: 3px dashed var(--line);
-  padding-bottom: 0.4rem;
-  margin-bottom: 1.25rem;
-}
-
-a { color: var(--turf); }
-a:hover { color: var(--turf-deep); }
-
-/* ---------- Navbar: the "scoreboard bar" ---------- */
 
 .navbar.bg-success {
-  background: linear-gradient(180deg, var(--turf-deep), #0A2C22) !important;
-  border-bottom: 3px dashed rgba(250, 249, 244, 0.35);
+  background-color: var(--turf-green-dark) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
-.navbar-brand {
-  color: var(--chalk) !important;
-  font-size: 1.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.navbar .nav-link {
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: rgba(250, 249, 244, 0.85) !important;
-  padding: 0.5rem 0.9rem !important;
-  transition: color 0.15s ease;
-}
-
-.navbar .nav-link:hover {
-  color: var(--amber) !important;
-}
-
-.navbar form .btn-link {
-  text-decoration: none;
-}
-
-/* ---------- Buttons ---------- */
-
-.btn {
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  border-radius: 6px;
-  border: none;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-}
-
-.btn:hover { transform: translateY(-1px); }
-.btn:active { transform: translateY(0); }
-
-/* Chalk-line reveal on hover — the one motion signature on the page */
-.btn::after {
-  content: "";
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  bottom: 4px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.65);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.2s ease;
-}
-
-.btn:hover::after { transform: scaleX(1); }
-
-.btn-success {
-  background: var(--turf) !important;
-  color: var(--chalk) !important;
-  box-shadow: 0 2px 0 #145436;
-}
-.btn-success:hover { background: #197044 !important; }
-
-.btn-danger {
-  background: var(--coral) !important;
-  color: var(--chalk) !important;
-  box-shadow: 0 2px 0 #a5333c;
-}
-.btn-danger:hover { background: #c13a44 !important; }
-
-.btn-primary {
-  background: var(--turf-deep) !important;
-  color: var(--chalk) !important;
-  box-shadow: 0 2px 0 #06180f;
-}
-
-.btn-outline-primary {
-  color: var(--turf-deep) !important;
-  border: 2px solid var(--turf-deep) !important;
-  background: transparent !important;
-}
-.btn-outline-primary:hover {
-  background: var(--turf-deep) !important;
-  color: var(--chalk) !important;
-}
-
-/* ---------- Tables: the pitch ---------- */
-
-.table {
-  background: var(--chalk);
-  border-radius: var(--radius);
-  overflow: hidden;
-  border: 1px solid var(--line);
-  box-shadow: 0 1px 3px rgba(14, 59, 46, 0.06);
-}
-
-.table thead {
-  background: var(--turf-deep);
-}
-
-.table thead th {
-  color: var(--chalk);
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  border: none;
-  padding: 0.85rem 0.75rem;
-}
-
-.table tbody tr {
-  transition: background-color 0.12s ease;
-}
-
-/* Mowed-stripe zebra rows */
-.table tbody tr:nth-child(even) {
-  background-color: var(--turf-light);
-}
-
-.table tbody tr:hover {
-  background-color: rgba(232, 163, 61, 0.14); /* floodlight catching the row */
-}
-
-.table td {
-  padding: 0.75rem;
-  border-color: var(--line);
-  vertical-align: middle;
-  font-size: 0.92rem;
-}
-
-.table td.text-muted {
-  font-style: italic;
-  text-align: center;
-  padding: 2rem 1rem;
-}
-
-/* ---------- Badges: scoreboard chips ---------- */
-
-.badge {
-  font-family: var(--font-body);
+.browse-page h2 {
+  color: var(--turf-navy);
   font-weight: 700;
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  padding: 0.4em 0.75em;
-  border-radius: 999px;
 }
 
-.badge.bg-success {
-  background: var(--turf) !important;
+.court-column {
+  background: #fff;
+  border: 1px solid var(--turf-border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(16, 36, 62, 0.06);
+  height: 100%;
 }
 
-.badge.bg-danger {
-  background: var(--coral) !important;
+.court-column-header {
+  background: linear-gradient(
+    135deg,
+    var(--turf-green-dark),
+    var(--turf-green)
+  );
+  color: #fff;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 }
 
-.badge.bg-warning {
-  background: var(--amber) !important;
-  color: var(--turf-deep) !important;
+.court-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
-/* ---------- Forms ---------- */
-
-.form-control {
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 0.55rem 0.75rem;
-  font-family: var(--font-body);
+.court-location {
+  font-size: 0.8rem;
+  opacity: 0.85;
 }
 
-.form-control:focus {
-  border-color: var(--turf);
-  box-shadow: 0 0 0 3px rgba(30, 123, 77, 0.18);
+.court-slot-list {
+  padding: 0.5rem 0.75rem 0.75rem;
 }
 
-/* ---------- Alerts ---------- */
+.slot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 0.6rem;
+  border-radius: 10px;
+  transition: background-color 0.15s ease;
+}
 
-.alert {
+.slot-row:hover {
+  background-color: #f0f6f0;
+}
+
+.slot-row-booked {
+  opacity: 0.65;
+}
+
+.slot-time {
+  font-weight: 600;
+  color: var(--turf-navy);
+  min-width: 150px;
+}
+
+.slot-time-sep {
+  color: #9aa5ab;
+  margin: 0 0.15rem;
+}
+
+.slot-status {
+  flex-shrink: 0;
+}
+
+.slot-badge-open {
+  background-color: #e7f3e8;
+  color: var(--turf-green);
+  font-weight: 600;
+  padding: 0.4em 0.7em;
+}
+
+.slot-badge-booked {
+  background-color: #f1e4d8;
+  color: #a15c2a;
+  font-weight: 600;
+  padding: 0.4em 0.7em;
+}
+
+.slot-action .btn {
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.court-slot-list .slot-row + .slot-row {
+  border-top: 1px solid #f0f0ee;
+}
+
+.slot-modal {
   border: none;
-  border-left: 4px solid;
-  border-radius: 6px;
-  background: var(--chalk);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.slot-modal .modal-header {
+  background-color: var(--turf-navy);
+  color: #fff;
+  border-bottom: none;
+}
+
+.slot-modal .modal-header .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.slot-detail-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5rem;
+}
+
+.slot-detail-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.55rem 0;
+  border-bottom: 1px dashed var(--turf-border);
+}
+
+.slot-detail-list li:last-child {
+  border-bottom: none;
+}
+
+.slot-detail-list li span {
+  color: #6b7580;
   font-size: 0.9rem;
 }
 
-.alert-success { border-color: var(--turf); color: var(--turf-deep); }
-.alert-danger  { border-color: var(--coral); color: #7a1f26; }
-.alert-info    { border-color: var(--amber); color: #7a5417; }
-.alert-warning { border-color: var(--amber); color: #7a5417; }
-
-/* ---------- Responsive ---------- */
-
-@media (max-width: 576px) {
-  .navbar-brand { font-size: 1.5rem; }
-  h2 { font-size: 1.6rem; }
-  .table td, .table th { font-size: 0.82rem; padding: 0.55rem; }
-  .btn { font-size: 0.72rem; padding: 0.4rem 0.7rem; }
+.btn-success {
+  background-color: var(--turf-green);
+  border-color: var(--turf-green);
 }
 
-/* ---------- Accessibility ---------- */
-
-a:focus-visible,
-.btn:focus-visible,
-.nav-link:focus-visible {
-  outline: 2px solid var(--amber);
-  outline-offset: 2px;
+.btn-success:hover {
+  background-color: var(--turf-green-dark);
+  border-color: var(--turf-green-dark);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .btn, .table tbody tr, .btn::after {
-    transition: none !important;
-  }
+.btn-outline-success {
+  color: var(--turf-green);
+  border-color: var(--turf-green);
+}
+
+.btn-outline-success:hover {
+  background-color: var(--turf-green);
+  border-color: var(--turf-green);
 }
